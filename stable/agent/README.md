@@ -93,6 +93,7 @@ Parameter | Description | Default
 `dind.image` | Image to use for Docker-in-Docker (DinD) pod container | `docker:19.03-dind`
 `dind.port` | Port Docker-in-Docker (DinD) daemon listens on as REST request proxy | `2375`
 `dind.resources` | Pod resource requests & limits for dind sidecar (if enabled) | `{}`
+`dind.volumeMounts` | Extra volumeMounts configuration | `nil`
 `terminationGracePeriodSeconds` | Duration in seconds the pod needs to terminate gracefully | `30`
 
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`.
@@ -100,7 +101,7 @@ Specify each parameter using the `--set key=value[,key=value]` argument to `helm
 Alternatively, a YAML file that specifies the values for the above parameters can be provided while installing the chart. For example:
 
 ```console
-helm install --name bk-agent --namespace buildkite buildkite/agent -f values.yaml 
+helm install --name bk-agent --namespace buildkite buildkite/agent -f values.yaml
 ```
 
 > **Tip**: You can use the default [values.yaml](values.yaml) file
@@ -115,7 +116,7 @@ Check for examples of `pipeline.yml` and `build/deploy` scripts [here](pipeline-
 Adding your own hooks (e.g. environment hooks) depends on whether you use DinD or not.
 
 #### Without Docker-in-Docker
-Without using DinD, you can follow the lower part of the guide [here](https://buildkite.com/docs/agent/v3/docker#adding-hooks) 
+Without using DinD, you can follow the lower part of the guide [here](https://buildkite.com/docs/agent/v3/docker#adding-hooks)
 
 #### With Docker-in-Docker
 As the hooks directory is set to a shared dir, currently the best way to add your own hooks while using DinD consists of two steps.
@@ -123,7 +124,7 @@ As the hooks directory is set to a shared dir, currently the best way to add you
 2. Add an entrypoint script to your values.yml that copies the hooks from the image to the shared dir. E.g:
 
 ```
-entrypointd: 
+entrypointd:
   01-copy-hooks: |
     #!/bin/sh
     set -euo pipefail
